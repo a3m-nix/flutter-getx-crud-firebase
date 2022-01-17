@@ -15,8 +15,6 @@ class ProductProvider extends GetConnect {
 
   Future<dynamic> getData() async {
     final response = await get(url + "products.json");
-    /* print(url + "products.json");
-    print(response.body); */
     return response.body;
   }
 }

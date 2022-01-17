@@ -18,7 +18,11 @@ class ProductPage extends StatelessWidget {
         ),
         body: Obx(
           () => controller.products.isEmpty
-              ? Center(child: Text('Data masih kosong'))
+              ? (controller.isLoading == true)
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Center(child: Text('Data masih kosong'))
               : ListView.builder(
                   itemCount: controller.products.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -27,6 +31,8 @@ class ProductPage extends StatelessWidget {
                       leading: CircleAvatar(),
                       title: Text(item.name ?? ''),
                       trailing: Icon(Icons.delete),
+                      onTap: () =>
+                          Get.toNamed("/product/edit", arguments: item.id),
                     );
                   },
                 ),

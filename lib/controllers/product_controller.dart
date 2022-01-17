@@ -8,17 +8,17 @@ import 'package:flutter/material.dart';
 class ProductController extends GetxController {
   late TextEditingController textEditingController = TextEditingController();
   var products = List<ProductModel>.empty().obs;
-  bool isLoading = true;
+  var isLoading = true.obs;
 
   ProductController() {
-    ProductProvider().getData().then((value) {
-      Map<String, dynamic> mapData = Map<String, dynamic>.from(value);
-      isLoading = false;
-      for (var item in mapData.values) {
-        var data =
-            ProductModel(name: item['name'], createdAt: item['created_at']);
+    ProductProvider().getData().then((response) {
+      Map<String, dynamic> mapData = Map<String, dynamic>.from(response);
+      isLoading.value = false;
+      mapData.forEach((key, value) {
+        var data = ProductModel(
+            id: key, name: value['name'], createdAt: value['created_at']);
         products.add(data);
-      }
+      });
       //print(mapData);
     });
     update();
@@ -44,5 +44,16 @@ class ProductController extends GetxController {
   @override
   void dispose() {
     textEditingController.dispose();
+  }
+
+  ProductModel findById(String id) {
+    return products.firstWhere((element) => element.id == id);
+  }
+
+  void edit(String id, String name) {
+    ProductModel model = this.findById(id);
+    model.name = name;
+    products.refresh();
+    Get.back();
   }
 }
