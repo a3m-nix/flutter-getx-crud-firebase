@@ -10,7 +10,8 @@ class ProductEditPage extends StatelessWidget {
     print(Get.arguments);
     final data = productController.findById(Get.arguments);
     print(data);
-    productController.textEditingController.text = data.name!;
+    productController.txtName.text = data.name!;
+    productController.txtStock.text = data.stock!;
     return Scaffold(
       appBar: AppBar(
         title: Text('EDIT Produk'),
@@ -22,15 +23,24 @@ class ProductEditPage extends StatelessWidget {
             children: [
               TextField(
                 autocorrect: false,
-                controller: productController.textEditingController,
+                controller: productController.txtName,
                 decoration: InputDecoration(
                   labelText: "Nama ",
                   hintText: "Input nama",
                   border: OutlineInputBorder(),
                 ),
-                onEditingComplete: () => Get.find<ProductController>().edit(
-                    Get.arguments,
-                    productController.textEditingController.text),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              TextField(
+                autocorrect: false,
+                controller: productController.txtStock,
+                decoration: InputDecoration(
+                  labelText: "Stock ",
+                  hintText: "Input Stock",
+                  border: OutlineInputBorder(),
+                ),
               ),
               SizedBox(
                 height: 30,
@@ -38,7 +48,8 @@ class ProductEditPage extends StatelessWidget {
               ElevatedButton(
                   onPressed: () => Get.find<ProductController>().edit(
                       Get.arguments,
-                      productController.textEditingController.text),
+                      productController.txtName.text,
+                      productController.txtStock.text),
                   child: Text('POST'))
             ],
           ),

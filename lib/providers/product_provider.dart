@@ -17,4 +17,12 @@ class ProductProvider extends GetConnect {
     final response = await get(url + "products.json");
     return response.body;
   }
+
+  Future<void> deleteData(String id) async {
+    await delete(url + "products/$id.json");
+  }
+
+  Future<dynamic> update(String id, String name, String stock) async {
+    await patch(url + "products/$id.json", {"name": name, "stock": stock});
+  }
 }

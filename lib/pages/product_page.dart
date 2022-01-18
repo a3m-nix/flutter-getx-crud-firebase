@@ -17,25 +17,34 @@ class ProductPage extends StatelessWidget {
           ],
         ),
         body: Obx(
-          () => controller.products.isEmpty
-              ? (controller.isLoading == true)
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : Center(child: Text('Data masih kosong'))
-              : ListView.builder(
-                  itemCount: controller.products.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final item = controller.products[index];
-                    return ListTile(
-                      leading: CircleAvatar(),
-                      title: Text(item.name ?? ''),
-                      trailing: Icon(Icons.delete),
-                      onTap: () =>
-                          Get.toNamed("/product/edit", arguments: item.id),
-                    );
-                  },
-                ),
+          () => (controller.isLoading == true)
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : controller.products.isEmpty
+                  ? Center(child: Text('Data masih kosong'))
+                  : ListView.builder(
+                      itemCount: controller.products.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final item = controller.products[index];
+                        return ListTile(
+                          leading: CircleAvatar(),
+                          title: Text(item.name ?? ''),
+                          subtitle: Text("Stok " + item.stock.toString()),
+                          trailing: InkWell(
+                            child: Icon(Icons.delete),
+                            onTap: () => Get.defaultDialog(
+                                textConfirm: "Confirm",
+                                textCancel: "Cancel",
+                                onConfirm: () =>
+                                    controller.delete(item.id.toString()),
+                                middleText: "Anda Yakin ?"),
+                          ),
+                          onTap: () =>
+                              Get.toNamed("/product/edit", arguments: item.id),
+                        );
+                      },
+                    ),
         ));
   }
 }

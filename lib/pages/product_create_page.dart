@@ -18,21 +18,32 @@ class ProductCreatePage extends StatelessWidget {
             children: [
               TextField(
                 autocorrect: false,
-                controller: productController.textEditingController,
+                controller: productController.txtName,
                 decoration: InputDecoration(
                   labelText: "Nama ",
                   hintText: "Input nama",
                   border: OutlineInputBorder(),
                 ),
-                onEditingComplete: () => Get.find<ProductController>()
-                    .add(productController.textEditingController.text),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              TextField(
+                autocorrect: false,
+                controller: productController.txtStock,
+                decoration: InputDecoration(
+                  labelText: "Stock ",
+                  hintText: "Input Stock",
+                  border: OutlineInputBorder(),
+                ),
               ),
               SizedBox(
                 height: 30,
               ),
               ElevatedButton(
-                  onPressed: () => Get.find<ProductController>()
-                      .add(productController.textEditingController.text),
+                  onPressed: () => Get.find<ProductController>().add(
+                      productController.txtName.text,
+                      productController.txtStock.text),
                   child: Text('POST'))
             ],
           ),
